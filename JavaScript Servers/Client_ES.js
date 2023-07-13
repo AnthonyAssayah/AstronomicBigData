@@ -89,6 +89,7 @@
 // runClient();
 const { Kafka } = require('kafkajs');
 const { Client } = require('@elastic/elasticsearch');
+const moment = require('moment');
 
 const kafka = new Kafka({
   clientId: 'astronomy-event-client',
@@ -113,9 +114,10 @@ const bonsaiConfig = {
 };
 
 const client = new Client(bonsaiConfig);
-const index = 'acme-production'; // The Elasticsearch index name where you want to push the messages
-
+const index = 'astronomic-index-new'; // The Elasticsearch index name where you want to push the messages
 // Example of consuming messages from Kafka and pushing them to Elasticsearch
+
+
 const consumeAndPushToElasticsearch = async () => {
   const consumer = kafka.consumer({ groupId: 'astronomy-event-group' });
 
@@ -125,18 +127,35 @@ const consumeAndPushToElasticsearch = async () => {
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       const { key, value } = message;
-
+  
       // Process the received message from Kafka
-      console.log(`Received message on topic ${topic}, partition ${partition}, key ${key}, value ${value}`);
+      // console.log(`Received message on topic ${topic}, partition ${partition}, key ${key}, value ${value}`);
+  
+      // Parse the JSON message
+      const parsedMessage = JSON.parse(value);
+  
+      //Convert the time field to ISO 8601 format
+      const isoTime = moment(parsedMessage.time, 'ddd, DD MMM YYYY HH:mm:ss ZZ').toISOString();
+      parsedMessage.time = isoTime;
 
+      //   // Convert the RA and DEC fields to strings without rounding
+      parsedMessage.location.RA = parsedMessage.location.RA.toString();
+      parsedMessage.location.DEC = parsedMessage.location.DEC.toString();
+  
       // Push the message to Elasticsearch
       await client.index({
         index,
-        body: { key, value }, // Adjust the document structure as per your needs
+        body: parsedMessage, // Use the modified parsed message object as the body
       });
+  
+      // Print the message stored in Elasticsearch
+      console.log('Message stored in Elasticsearch:', parsedMessage);
     },
   });
+  
 };
+
+
 
 // Call the consumeAndPushToElasticsearch function to start consuming messages and pushing them to Elasticsearch
 consumeAndPushToElasticsearch().catch((error) => console.error(`Error occurred: ${error}`));

@@ -1,0 +1,32 @@
+{
+    "mappings": {
+      "properties": {
+        "time": {
+          "type": "date"
+        },
+        "observatory": {
+          "type": "text"
+        },
+        "location": {
+          "properties": {
+            "RA": {
+              "type": "text"
+            },
+            "DEC": {
+              "type": "text"
+            }
+          }
+        },
+        "activity": {
+          "type": "text"
+        },
+        "urgency": {
+          "type": "long"
+        },
+        "title": {
+          "type": "text"
+        }
+      }
+    }
+  }
+  

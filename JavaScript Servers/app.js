@@ -10,13 +10,14 @@ app.use(cors()); // Add this line to enable CORS
 
 // Elasticsearch configuration  
 const esConfig = {
-  node: 'http://localhost:9200', // Replace with your Elasticsearch node URL
+  node: 'https://a308a0gamg:nqt2vxs23c@personal-search-9388846395.us-east-1.bonsaisearch.net:443', // Replace with the correct Elasticsearch node URL
   auth: {
-    username: 'anthony19', // Replace with your Elasticsearch username
-    password: 'Assayah19' // Replace with your Elasticsearch password
+    username: 'a308a0gamg', // Replace with the correct Elasticsearch username
+    password: 'nqt2vxs23c' // Replace with the correct Elasticsearch password
   },
-  index: 'my-index' // Replace with the Elasticsearch index you want to fetch from
+  index: 'astronomic-index-new' // Replace with the Elasticsearch index you want to fetch from
 };
+
 
 // Redis configuration
 const REDIS_HOST = 'us1-valued-sawfish-38283.upstash.io'; // Replace with your Upstash Redis host
@@ -40,6 +41,9 @@ async function getFromES() {
     throw error;
   }
 }
+
+
+
 
 // Function to fetch asteroid data from Upstash Redis
 async function getAsteroidsFromRedis() {

@@ -65,7 +65,6 @@ const activityTypes = [
   "X-Ray Rise",
   "Comet"
 ];
-
 // Read the Bright Star Catalog JSON file
 const bscFilePath = './BSC.json';
 const bscData = fs.readFileSync(bscFilePath);
@@ -80,8 +79,8 @@ function generateRandomMessage() {
     time: getRandomTime(),
     observatory: getRandomObservatory(),
     location: {
-      RA: star.RA,
-      DEC: star.DEC
+      RA: star.RA, // Parse the RA value as a float
+      DEC: star.DEC // Parse the DEC value as a float
     },
     activity: getRandomActivity(),
     urgency: getRandomUrgency(),
