@@ -2,6 +2,105 @@
 <html>
 <head>
   <title>JSON Messages</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('newMessage', (message) => {
+      // Insert the new message row into the table
+      const tableBody = document.querySelector('tbody');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${message.time}</td>
+        <td>${message.observatory}</td>
+        <td>RA: ${message.location.RA}, DEC: ${message.location.DEC}</td>
+        <td>${message.activity}</td>
+        <td>${message.urgency}</td>
+        <td>${message.title}</td>
+      `;
+      tableBody.insertBefore(newRow, tableBody.firstChild);
+    });
+
+    function search() {
+      const searchQuery = document.getElementById('search').value;
+      const searchFilter = document.getElementById('filter').value;
+
+      // Send the search query and filter to the server via Socket.IO
+      socket.emit('search', { search: searchQuery, filter: searchFilter });
+    }
+
+    socket.on('searchResult', (messages) => {
+      const tableBody = document.querySelector('tbody');
+      tableBody.innerHTML = '';
+
+      messages.forEach((message) => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td>${message.time}</td>
+          <td>${message.observatory}</td>
+          <td>RA: ${message.location.RA}, DEC: ${message.location.DEC}</td>
+          <td>${message.activity}</td>
+          <td>${message.urgency}</td>
+          <td>${message.title}</td>
+        `;
+        tableBody.appendChild(newRow);
+      });
+    });
+
+    function clearSearch() {
+      document.getElementById('search').value = '';
+      search();
+    }
+  </script>
+</head>
+<body>
+  <h1>Simulator: Astronomic Events</h1>
+  <div>
+    <label for="search">Search:</label>
+    <input type="text" id="search">
+    <select id="filter">
+      <option value="title">Title</option>
+      <option value="activity">Activity</option>
+      <option value="observatory">Observatory</option>
+    </select>
+    <button onclick="search()">Search</button>
+    <button onclick="clearSearch()">Clear</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Observatory</th>
+        <th>Location</th>
+        <th>Activity</th>
+        <th>Urgency</th>
+        <th>Title</th> 
+      </tr>
+    </thead>
+    <tbody>
+      <% messages.forEach(function(message) { %>
+        <tr>
+          <td><%= message.time %></td>
+          <td><%= message.observatory %></td>
+          <td>RA: <%= message.location.RA %>, DEC: <%= message.location.DEC %></td>
+          <td><%= message.activity %></td>
+          <td><%= message.urgency %></td>
+          <td><%= message.title %></td> 
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>JSON Messages</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -15,7 +114,7 @@
         <th>Activity</th>
         <th>Urgency</th>
         <th>Title</th> <!-- Add a new column for "Title" -->
-      </tr>
+      <!-- </tr>
     </thead>
     <tbody>
       <% messages.forEach(function(message) { %>
@@ -26,9 +125,9 @@
           <td><%= message.activity %></td>
           <td><%= message.urgency %></td>
           <td><%= message.title %></td> <!-- Display the "Title" value -->
-        </tr>
+        <!-- </tr>
       <% }) %>
     </tbody>
   </table>
 </body>
-</html>
+</html> --> 

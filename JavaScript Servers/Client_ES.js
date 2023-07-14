@@ -90,6 +90,7 @@
 const { Kafka } = require('kafkajs');
 const { Client } = require('@elastic/elasticsearch');
 const moment = require('moment');
+const io = require('socket.io-client');
 
 const kafka = new Kafka({
   clientId: 'astronomy-event-client',
@@ -116,6 +117,8 @@ const bonsaiConfig = {
 const client = new Client(bonsaiConfig);
 const index = 'astronomic-index-new'; // The Elasticsearch index name where you want to push the messages
 // Example of consuming messages from Kafka and pushing them to Elasticsearch
+
+const socket = io('http://localhost:3000'); // Replace 'http://localhost:3000' with the correct server address
 
 
 const consumeAndPushToElasticsearch = async () => {
@@ -148,6 +151,9 @@ const consumeAndPushToElasticsearch = async () => {
         body: parsedMessage, // Use the modified parsed message object as the body
       });
   
+      // Emit a 'newMessage' event to the server via Socket.IO
+      socket.emit('newMessage', parsedMessage);
+
       // Print the message stored in Elasticsearch
       console.log('Message stored in Elasticsearch:', parsedMessage);
     },
