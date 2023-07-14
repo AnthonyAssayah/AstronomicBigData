@@ -22,20 +22,18 @@
       <th>Magnitude (mag)</th>
       <th>Diameter (m)</th>
       <th>Close Approach Date</th>
-      <th>Distance to the Earth (km)</th>
+      <th>Distance to Earth (km)</th>
       <th>Velocity (km/s)</th>
-
     </tr>
     <% asteroids.forEach(function(asteroid) { %>
       <tr>
         <td><%= asteroid.id %></td>
         <td><%= asteroid.name %></td>
         <td><%= asteroid.absolute_magnitude_h.toFixed(2) %></td>
-        <td><%= asteroid.estimated_diameter.meters.estimated_diameter_min.toFixed(0) %> - <%= asteroid.estimated_diameter.meters.estimated_diameter_max.toFixed(0) %> m</td>
+        <td><%= `${asteroid.estimated_diameter.meters.estimated_diameter_min.toFixed(0)} - ${asteroid.estimated_diameter.meters.estimated_diameter_max.toFixed(0)}` %> m</td>
         <td><%= asteroid.close_approach_data[0].close_approach_date_full %></td>
         <td><%= asteroid.close_approach_data[0].miss_distance.kilometers %></td>
-        <td><%= asteroid.close_approach_data.length > 0 && asteroid.close_approach_data[0]?.relative_velocity?.kilometers_per_second ? parseFloat(asteroid.close_approach_data[0].relative_velocity.kilometers_per_second).toFixed(2) : 'N/A' %></td>
-
+        <td><%= asteroid.close_approach_data[0].relative_velocity.kilometers_per_second %></td>
       </tr>
     <% }) %>
   </table>

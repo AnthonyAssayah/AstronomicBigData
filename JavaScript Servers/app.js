@@ -116,13 +116,10 @@
 // });
 
 
-
-
-
-
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const axios = require('axios');
 const { Client } = require('@elastic/elasticsearch');
 
 const app = express();
@@ -150,10 +147,21 @@ app.get('/', async (req, res) => {
     const searchQuery = query.search;
     const searchFilter = query.filter;
     const messages = await searchMessages(searchQuery, searchFilter);
+    const asteroids = await fetchAsteroids();
 
-    res.render('index', { messages, searchQuery, searchFilter });
+    res.render('index', { messages, asteroids });
   } catch (error) {
-    console.error('Error fetching messages:', error);
+    console.error('Error fetching data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/asteroids', async (req, res) => {
+  try {
+    const asteroids = await fetchAsteroids();
+    res.render('asteroids', { asteroids });
+  } catch (error) {
+    console.error('Error fetching asteroids:', error);
     res.status(500).send('Internal Server Error');
   }
 });
@@ -213,6 +221,34 @@ async function searchMessages(searchQuery, searchFilter) {
 
   const messages = body.hits.hits.map(hit => hit._source);
   return messages;
+}
+
+async function fetchAsteroids() {
+  const NASA_API_KEY = 'PkhF6B4cuH22gwSHKSmLWhbLxbVPXDDb2GuRoKeQ'; // Replace with your NASA API key
+  const NASA_API_URL = 'https://api.nasa.gov/neo/rest/v1/feed';
+
+  try {
+    const response = await axios.get(NASA_API_URL, {
+      params: {
+        api_key: NASA_API_KEY,
+      },
+    });
+
+    const asteroids = Object.values(response.data.near_earth_objects)
+      .flat()
+      .map((asteroid) => ({
+        id: asteroid.id,
+        name: asteroid.name,
+        absolute_magnitude_h: asteroid.absolute_magnitude_h,
+        estimated_diameter: asteroid.estimated_diameter,
+        close_approach_data: asteroid.close_approach_data,
+      }));
+
+    return asteroids;
+  } catch (error) {
+    console.error('Error fetching asteroids:', error);
+    throw error;
+  }
 }
 
 const port = 3000;
