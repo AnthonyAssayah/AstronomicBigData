@@ -79,8 +79,8 @@ function generateRandomMessage() {
     time: getRandomTime(),
     observatory: getRandomObservatory(),
     location: {
-      RA: star.RA, // Parse the RA value as a float
-      DEC: star.DEC // Parse the DEC value as a float
+      RA: star.RA, 
+      DEC: star.DEC 
     },
     activity: getRandomActivity(),
     urgency: getRandomUrgency(),
