@@ -1,0 +1,193 @@
+<!--
+=========================================================
+Material Dashboard - v2.1.2
+=========================================================
+
+Product Page: https://www.creative-tim.com/product/material-dashboard
+Copyright 2020 Creative Tim (https://www.creative-tim.com)
+Coded by Creative Tim
+
+=========================================================
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include("../partials/headers") %>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <!--ariel ws -->
+</head>
+
+<body class="" onload="setWs()">
+  <div class="wrapper ">
+    <%- include("../partials/sidebar") %>
+    <div class="main-panel">
+      <%- include("../partials/navbar") %>
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!--start-->
+            <% cards.forEach(function(card) { %>
+            <%- include("../partials/card", card) %>
+            <% }); %>
+            <!--end-->
+
+           <!-- New Code: Display the four most recent messages in cards -->
+          <div class="col-md-12">
+            <div class="row">
+              <% for (let i = 0; i < 4 && i < messages.length; i++) { %>
+                <%- include("../partials/card", {
+                  districtId: `messageCard-${i}`,
+                  activity: messages[i].activity, // Add activity field
+                  title: messages[i].title,
+                  observatory: messages[i].observatory, // Add observatory field
+                  location: messages[i].location, // Add location field
+                  value: messages[i].urgency,
+                  unit: 'Urgency',
+                  icon: 'priority_high',
+                  fotterIcon: 'access_time',
+                  fotterText: messages[i].time
+                }) %>
+              <% } %>
+            </div>
+          </div>
+
+
+            <div class="col-md-12">
+              <!-- Search Bar for Astronomic Events -->
+              <div class="card">
+                <div class="card-header card-header-info">
+                  <h4 class="card-title">Search Astronomic Events</h4>
+                  <p class="card-category">Filter events by activity, observatory, or title</p>
+                </div>
+                <div class="card-body">
+                  <form id="searchForm" action="/events" method="GET"> <!-- Update the action attribute here -->
+                    <div class="form-row">
+                      <div class="col-md-4">
+                        <label for="searchQuery">Search Query:</label>
+                        <input type="text" class="form-control" id="searchQuery" name="search" placeholder="Enter search query" value="<%= searchQuery || '' %>">
+                      </div>
+                      <div class="col-md-4">
+                        <label for="filterOption">Filter By:</label>
+                        <select class="form-control" id="filterOption" name="filter">
+                          <option value="">--Select Filter--</option>
+                          <option value="activity" <%= searchFilter === 'activity' ? 'selected' : '' %>>Activity</option>
+                          <option value="observatory" <%= searchFilter === 'observatory' ? 'selected' : '' %>>Observatory</option>
+                          <option value="title" <%= searchFilter === 'title' ? 'selected' : '' %>>Title</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label>&nbsp;</label><br>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+
+            <!-- Table to display astronomic messages -->
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Astronomic Events</h4>
+                  <p class="card-category">List of astronomic events</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>Time</th>
+                        <th>Observatory</th>
+                        <th>Location</th>
+                        <th>Activity</th>
+                        <th>Urgency</th>
+                        <th>Title</th>
+                      </thead>
+                      <tbody>
+                        <% messages.forEach(function(message) { %>
+                        <tr>
+                          <td><%= message.time %></td>
+                          <td><%= message.observatory %></td>
+                          <td>RA: <%= message.location.RA %>, DEC: <%= message.location.DEC %></td>
+                          <td><%= message.activity %></td>
+                          <td><%= message.urgency %></td>
+                          <td><%= message.title %></td>
+                        </tr>
+                        <% }) %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End of the astronomic messages table -->
+          </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  // Function to update the table with search results
+  function updateTable(messages) {
+    const tableBody = document.querySelector('tbody');
+    tableBody.innerHTML = '';
+
+    messages.forEach((message) => {
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${message.time}</td>
+        <td>${message.observatory}</td>
+        <td>RA: ${message.location.RA}, DEC: ${message.location.DEC}</td>
+        <td>${message.activity}</td>
+        <td>${message.urgency}</td>
+        <td>${message.title}</td>
+      `;
+      tableBody.appendChild(newRow);
+    });
+  }
+
+   // New Code: Update the cards with the four most recent messages
+   const messageCards = document.querySelectorAll("[id^='messageCard-']");
+    for (let i = 0; i < 4 && i < messages.length; i++) {
+      const card = messageCards[i];
+      card.querySelector('.card-category').innerText = messages[i].title;
+      card.querySelector('.card-title').innerText = messages[i].urgency;
+      card.querySelector('.card-footer a').innerText = messages[i].time;
+    }
+
+  // Function to handle the search form submission using Socket.IO
+  function search() {
+    const searchQuery = document.getElementById('searchQuery').value;
+    const searchFilter = document.getElementById('filterOption').value;
+
+    // Send the search query and filter to the server via Socket.IO
+    socket.emit('search', { search: searchQuery, filter: searchFilter });
+  }
+
+  // Function to clear the search form and fetch all events again
+  function clearSearch() {
+    document.getElementById('searchQuery').value = '';
+    document.getElementById('filterOption').value = '';
+    search();
+  }
+
+  // Socket.IO connection
+  var socket = io.connect();
+
+  // Handle search results from the server
+  socket.on('searchResult', function (messages) {
+    updateTable(messages);
+  });
+
+  // Perform initial search when the page loads
+  search();
+</script>
+
+</html>

@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-md-12">
+      <div class="card card-chart" style="width: 100%;">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Asteroids Distribution</h4>
+          <p class="card-category">Distribution of asteroids that passed near the Earth in the last month</p>
+        </div>
+        <div class="card-body">
+          <!-- Use a div element to render the Plotly chart -->
+          <div id="asteroidsChart"></div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<!-- Rest of the code remains the same -->
+<script>
+    // JavaScript code to render the asteroids chart
+    function createAsteroidsChart() {
+      fetch('/api/asteroids')
+        .then((response) => response.json())
+        .then((data) => {
+          const asteroidsData = data;
+  
+          // Sort the data by date in ascending order
+          asteroidsData.sort((a, b) => new Date(a.date) - new Date(b.date));
+          
+          // Get the date one month ago from the current date
+          const oneMonthAgo = new Date();
+          oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+          // Filter the data to include only entries from the last month
+          const filteredData = asteroidsData.filter((entry) => new Date(entry.date) >= oneMonthAgo);
+          
+          // Convert the date format to be recognized by Plotly for the filtered data
+          filteredData.forEach((entry) => {
+            entry.date = new Date(entry.date).getTime();
+          });
+  
+          // Extract dates and number of asteroids from the filtered data
+          const dates = filteredData.map((entry) => entry.date);
+          const numberOfAsteroids = filteredData.map((entry) => entry.number);
+  
+          // Plotly chart configuration
+          const trace = {
+            x: dates,
+            y: numberOfAsteroids,
+            mode: 'lines',
+          };
+  
+          // Define Layout
+          const layout = {
+            xaxis: {
+              type: 'date',
+              title: 'Date',
+              tickformat: '%b %d', // Format the date ticks to display month and day
+            },
+            yaxis: {
+              title: 'Number of Asteroids',
+            },
+            title: 'Asteroids Distribution in the Last Month',
+            autosize: true, // Let Plotly automatically resize the chart to fit the container
+          };
+  
+          // Display the Plotly chart
+          Plotly.newPlot('asteroidsChart', [trace], layout);
+        })
+        .catch((error) => {
+          console.error('Error fetching asteroids:', error);
+        });
+    }
+  
+    window.addEventListener('load', createAsteroidsChart);
+</script>

@@ -1,0 +1,210 @@
+<!-- sun.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("../partials/headers") %>
+  <style>
+    /* Your existing styles here */
+    /* Add the styles for the card.ejs table */
+    .card {
+      margin-bottom: 30px;
+      border: 0;
+      border-radius: 6px;
+      color: rgba(0, 0, 0, 0.87);
+      background: #fff;
+      width: 100%;
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14), 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 4px 5px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .card .card-header {
+      background-color: #f5f5f5;
+      padding: 15px 20px;
+      border-radius: 3px;
+      margin-top: -30px;
+      border: 0;
+      margin-bottom: 15px;
+    }
+
+    .card .card-header-primary {
+      background: linear-gradient(60deg, #ffa726, #fb8c00);
+    }
+
+    .card .card-body {
+      padding: 0.9375rem 20px;
+      position: relative;
+      height: 330px;
+    }
+
+    .card .table {
+      margin-bottom: 0;
+    }
+
+    .card .card-category {
+      margin: 0;
+      font-weight: 300;
+      font-size: 0.75rem; /* Increased the font size */
+    }
+
+    .card .card-title {
+      margin: 0;
+      line-height: 1.42857143;
+    }
+
+    .card .card-title:first-child {
+      margin-top: 0.25rem;
+    }
+
+    .card .card-title + .card-category {
+      margin-bottom: 0;
+    }
+
+    .card .card-title.card-title-sm {
+      font-size: 1.25em;
+    }
+
+    .card .card-footer {
+      margin: 0 20px 10px;
+      padding-top: 10px;
+      border-top: 1px solid #eeeeee;
+    }
+
+    .card .card-footer p {
+      color: #999999;
+      margin: 0;
+    }
+
+    .card .card-footer p:first-child {
+      margin-left: 0;
+    }
+
+    .card .card-footer img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    /* End of card.ejs styles */
+  </style>
+</head>
+<body class="" onload="setWs()">
+  <div class="wrapper">
+    <%- include("../partials/sidebar") %>
+    <div class="main-panel">
+      <%- include("../partials/navbar") %>
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- Scrape data from the Sun website and display it here -->
+            <div class="weather-wrapper">
+              <div class="weather-card">
+                <h1>The Sun</h1>
+                <div id="sun-data">
+                  <p><%= sunData.sunInfo %></p>
+                  <h2 style="font-size: 1.5rem;">The Sun Distance from Earth</h2> <!-- Increased the font size -->
+                  <div class="card">
+                    <div class="card-header card-header-primary">
+                      <h4 class="card-title">Sun Distance Data</h4>
+                      <p class="card-category" style="font-size: 0.75rem;">Information about the Sun's distance from Earth</p> <!-- Increased the font size -->
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-sm"> <!-- Reduced the table size -->
+                          <thead class="text-primary">
+                            <th>Distance Type</th>
+                            <th>Value</th>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Distance Kilometers:</td>
+                              <td><%= sunData.distanceKilometers %></td>
+                            </tr>
+                            <tr>
+                              <td>Distance AU:</td>
+                              <td><%= sunData.distanceAU %></td>
+                            </tr>
+                            <tr>
+                              <td>Light Travel Time:</td>
+                              <td><%= sunData.lightTravelTime %></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="rise">
+                    <%= sunData.rise %>
+                  </div>
+                  <div class="transit">
+                    <%= sunData.transit %>
+                  </div>
+                  <div class="set">
+                    <%= sunData.set %>
+                  </div>
+
+                  <!-- Display the scraped image -->
+                  <% if (sunData.imageUrl) { %>
+                    <div class="sun-image">
+                      <img src="<%= sunData.imageUrl %>" alt="Sun Image">
+                    </div>
+                  <% } else { %>
+                    <p>No image available</p>
+                  <% } %>
+
+                  <!-- Display the scraped sky map image -->
+                  <% if (sunData.skyMapImageUrl) { %>
+                    <div class="sky-map-image">
+                      <img src="<%= sunData.skyMapImageUrl %>" alt="Sky Map of the Sun">
+                    </div>
+                  <% } else { %>
+                    <p>No sky map image available</p>
+                  <% } %>
+
+                  <!-- Closest Approach of The Sun to Earth -->
+                  <h1>Closest Approach of The Sun to Earth</h1>
+                  <p><%= sunData.closestApproachDescription %></p>
+                  <div class="card">
+                    <div class="card-header card-header-primary">
+                      <h4 class="card-title">Closest Approach Data</h4>
+                      <p class="card-category" style="font-size: 0.75rem;">Information about the closest approach of the Sun to Earth</p> <!-- Increased the font size -->
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-sm"> <!-- Reduced the table size -->
+                          <thead class="text-primary">
+                            <th>Property</th>
+                            <th>Value</th>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Date</td>
+                              <td><%= sunData.closestApproachDate %></td>
+                            </tr>
+                            <tr>
+                              <td>Distance Kilometers</td>
+                              <td><%= sunData.closestApproachDistanceKm %></td>
+                            </tr>
+                            <tr>
+                              <td>Distance AU</td>
+                              <td><%= sunData.closestApproachDistanceAU %></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Include your existing JavaScript here
+  </script>
+</body>
+</html>
