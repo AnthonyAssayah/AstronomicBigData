@@ -3,6 +3,7 @@ const { Client } = require('@elastic/elasticsearch');
 const moment = require('moment');
 const io = require('socket.io-client');
 
+// Kafka Configuration using Upstash.com
 const kafka = new Kafka({
   clientId: 'astronomy-event-client',
   brokers: ['social-rat-12153-us1-kafka.upstash.io:9092'],
@@ -16,20 +17,16 @@ const kafka = new Kafka({
 
 const topic = 'astronomic';
 
-// Elasticsearch configuration using Bonsai.io
+// Docker / Elasticsearch configuration using Bonsai.io
 const bonsaiConfig = {
-  node: 'https://a308a0gamg:nqt2vxs23c@personal-search-9388846395.us-east-1.bonsaisearch.net:443',
-  auth: {
-    username: 'a308a0gamg',
-    password: 'nqt2vxs23c',
-  },
+  node: 'http://localhost:9200',
 };
 
-const client = new Client(bonsaiConfig);
-const index = 'astronomic-index-new'; // The Elasticsearch index name where you want to push the messages
-// Example of consuming messages from Kafka and pushing them to Elasticsearch
 
-const socket = io('http://localhost:3000'); // Replace 'http://localhost:3000' with the correct server address
+const client = new Client(bonsaiConfig);
+const index = 'astronomic-index-new'; 
+
+const socket = io('http://localhost:3000'); 
 
 
 const consumeAndPushToElasticsearch = async () => {
@@ -42,9 +39,6 @@ const consumeAndPushToElasticsearch = async () => {
     eachMessage: async ({ topic, partition, message }) => {
       const { key, value } = message;
   
-      // Process the received message from Kafka
-      // console.log(`Received message on topic ${topic}, partition ${partition}, key ${key}, value ${value}`);
-  
       // Parse the JSON message
       const parsedMessage = JSON.parse(value);
   
@@ -52,7 +46,7 @@ const consumeAndPushToElasticsearch = async () => {
       const isoTime = moment(parsedMessage.time, 'ddd, DD MMM YYYY HH:mm:ss ZZ').toISOString();
       parsedMessage.time = isoTime;
 
-      //   // Convert the RA and DEC fields to strings without rounding
+      // Convert the RA and DEC fields to strings without rounding
       parsedMessage.location.RA = parsedMessage.location.RA.toString();
       parsedMessage.location.DEC = parsedMessage.location.DEC.toString();
   
@@ -71,8 +65,6 @@ const consumeAndPushToElasticsearch = async () => {
   });
   
 };
-
-
 
 // Call the consumeAndPushToElasticsearch function to start consuming messages and pushing them to Elasticsearch
 consumeAndPushToElasticsearch().catch((error) => console.error(`Error occurred: ${error}`));

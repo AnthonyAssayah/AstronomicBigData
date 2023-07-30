@@ -4,6 +4,32 @@
 
 <head>
   <%- include("../partials/headers") %>
+  <style>
+   .title-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .title {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 36px;
+      color: #022c85; /* Adjust the color as needed */
+      margin-left: 10px;
+    }
+
+    .nasa-logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -37px; /* Adjust the vertical position of the logo */
+      max-height: 60px; /* Adjust the logo size as needed */
+    }
+
+  </style>
 </head>
 
 <body class="" onload="setWs()">
@@ -13,6 +39,10 @@
         <%- include("../partials/navbar") %>
               <div class="content">
                 <div class="container-fluid">
+                  <div class="title-container">
+                    <img class="nasa-logo" src="images/nasa.png" alt="NASA Logo">
+                    <div class="title">NASA Asteroid</div>
+                  </div>
                     <div class="row">
                         <div class="col-md-12">
                           <div class="card">

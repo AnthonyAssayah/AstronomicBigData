@@ -1,0 +1,69 @@
+
+
+<div class="col-md-12">
+    <div class="card card-chart">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Astronomic Events Distribution</h4>
+        <p class="card-category">Distribution of astronomic events based on urgency</p>
+      </div>    
+      <div class="card-body">
+        <div class="ct-chart" id="astronomicEventsChart"></div>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">access_time</i> Data updated 4 minutes ago
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript to render the astronomic events chart -->
+  <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  <script>
+    function createAstronomicEventsChart() {
+      fetch('/api/events') // Fetch data from the API endpoint
+        .then((response) => response.json())
+        .then((data) => {
+          const events = data;
+  
+          const urgencies = events.map((event) => event.urgency);
+          const urgencyCount = [0, 0, 0, 0, 0];
+          urgencies.forEach((urgency) => {
+            if (urgency >= 1 && urgency <= 5) {
+              urgencyCount[urgency - 1]++;
+            }
+          });
+  
+          new Chartist.Bar(
+            '#astronomicEventsChart',
+            {
+              labels: ['Urgency 1', 'Urgency 2', 'Urgency 3', 'Urgency 4', 'Urgency 5'],
+              series: [urgencyCount],
+            },
+            {
+              axisX: {
+                showLabel: true,
+              },
+              axisY: {
+                showLabel: true,
+                onlyInteger: true,
+              },
+            }
+          );
+        })
+        .catch((error) => {
+          console.error('Error fetching astronomic events:', error);
+        });
+    }
+  
+    window.addEventListener('load', createAstronomicEventsChart);
+  </script>
+  
+  <style>
+    /* Basic styling for the chart container */
+    .ct-chart {
+      height: 250px;
+      width: 100%;
+      overflow: hidden;
+    }
+  </style>

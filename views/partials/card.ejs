@@ -1,0 +1,50 @@
+
+<div class="col-lg-3 col-md-6 col-sm-6">
+  <div class="card card-stats">
+    <% let urgencyClass = '';
+    switch (value) {
+      case 1:
+      case 2:
+        urgencyClass = 'green';
+        break;
+      case 3:
+        urgencyClass = 'yellow';
+        break;
+      case 4:
+        urgencyClass = 'orange';
+        break;
+      case 5:
+        urgencyClass = 'red';
+        break;
+      default:
+        urgencyClass = 'blue';
+        break;
+    } %>
+    <div class="card-header card-header-warning card-header-icon">
+      <!-- New Code: Display the urgency (number) in a square without an icon -->
+      <div class="square-card-icon <%= urgencyClass %>">
+        <h3 class="card-title" id="<%= districtId %>"><%= value %></h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- Display the Activity field -->
+      <h4 class="card-title"><%= activity %></h4>
+      <!-- Display the Title field -->
+      <p class="card-category"><strong><%= title %></strong></p> <!-- Make the title bold -->
+      <!-- Display the Observatory field -->
+      <p class="card-category"><%= observatory %></p>
+      <!-- Display the Location field -->
+      <p class="card-category">
+        <i class="material-icons">location_on</i> <!-- Add the location icon -->
+        RA: <%= location.RA %>, DEC: <%= location.DEC %>
+      </p>
+    </div>
+    <!-- Display the Date (time) in the card footer -->
+    <div class="card-footer">
+      <div class="stats">
+        <i class="material-icons text-danger"><%= fotterIcon %></i>
+        <span><%= fotterText %></span>
+      </div>
+    </div>
+  </div>
+</div>

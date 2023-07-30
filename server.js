@@ -7,6 +7,8 @@
   const { Kafka, Partitioners} = require("kafkajs");
   const { Client } = require('@elastic/elasticsearch');
   // const puppeteer = require('puppeteer');
+  const puppeteer = require('puppeteer-core');
+  const cheerio = require('cheerio');
 
   const port = 3001;
 
@@ -29,12 +31,9 @@
 
   // Elasticsearch configuration
   const bonsaiConfig = {
-    node: 'https://a308a0gamg:nqt2vxs23c@personal-search-9388846395.us-east-1.bonsaisearch.net:443',
-    auth: {
-      username: 'a308a0gamg',
-      password: 'nqt2vxs23c',
-    },
+    node: 'http://localhost:9200',
   };
+  
 
   const client = new Client(bonsaiConfig);
   const index = 'astronomic-index-new';
@@ -43,12 +42,9 @@
   app.use(express.static('public'));
   app.set('view engine', 'ejs');
 
-  const data = {
+ const data = {
     cards: [
-      //{ districtId: 'TLVVVVV', title: 'חיפה', value: 500, unit: 'חבילות', fotterIcon: '', fotterText: 'נפח ממוצע', icon: 'ycontent_cop' },
-      // { districtId: 'dan', title: 'דן', value: 1500, unit: 'חבילות', fotterIcon: '', fotterText: 'נפח ממוצע', icon: 'store' },
-      // { districtId: 'central', title: 'מרכז', value: 3500, unit: 'חבילות', fotterIcon: '', fotterText: 'נפח ממוצע', icon: 'info_outline' },
-      // { districtId: 'south', title: 'דרום', value: 700, unit: 'חבילות', fotterIcon: '', fotterText: 'נפח ממוצע', icon: 'add_shopping_cart' }
+      
     ],
     messages: []
   };
@@ -163,6 +159,8 @@
   app.get('/sun', async (req, res) => {
     try {
       const sunData = await scrapeSunData();
+      console.log('Sun Data:', sunData); 
+
       res.render('pages/sun', { sunData });
     } catch (error) {
       console.error('Error scraping Sun data:', error);
@@ -170,12 +168,52 @@
     }
   });
   
-  const puppeteer = require('puppeteer-core');
+  
 
   async function scrapeSunData() {
     const baseUrl = 'https://theskylive.com';
     const url = `${baseUrl}/sun-info`;
   
+    const response = await axios.get(url);
+
+    const $ = cheerio.load(response.data);
+
+    const arr = [];
+    $('.data').each(function(index, element) {
+      arr.push($(element).text());
+    });
+
+    const table = arr.slice(6);
+
+    const secondTable = table.map(item => {
+      const [date, rightAscension, declination, magnitude, apparentDiameter, constellation] = item
+        .trim()
+        .split('\n')
+        .filter(item => !/^\t+$/.test(item));
+
+        return {
+            date,
+            rightAscension,
+            declination,
+            magnitude,
+            apparentDiameter,
+            constellation,
+        };
+    });
+
+    // Function to remove all tabs from a string
+    function removeTabsFromString(str) {
+      return str.replace(/\t/g, '');
+    }
+
+    // Loop through each object in the array and remove tabs from all values
+    for (const obj of secondTable) {
+      for (const key in obj) {
+        obj[key] = removeTabsFromString(obj[key]);
+      }
+    }
+
+
     const browser = await puppeteer.launch({
       headless: 'new',
       executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', // Use the correct executable path
@@ -183,9 +221,10 @@
   
     const page = await browser.newPage();
     await page.goto(url);
+    
   
     // Wait for the page to load (you can adjust the wait time if needed)
-    await page.waitForTimeout(3000);
+    // await page.waitForTimeout(3000);
   
     // Scrape the data from the page
     const sunData = await page.evaluate((baseUrl) => {
@@ -195,6 +234,8 @@
       const riseElement = document.querySelector('div.rise');
       const transitElement = document.querySelector('div.transit');
       const setElement = document.querySelector('div.set');
+
+      console.log("riseElement: ", riseElement);
   
       // Extract the image URL of the Sun
       const imageElement = document.querySelector('.sun_container img');
@@ -211,9 +252,9 @@
       const fullSkyMapImageUrl = skyMapImageUrl ? new URL(skyMapImageUrl, baseUrl).href : null;
   
        // Extract the closest approach information
-  const closestApproachElement = [...document.querySelectorAll('h1')].find(element => element.textContent.includes('Closest Approach of The Sun to Earth'));
-  const closestApproachDescription = closestApproachElement ? closestApproachElement.nextElementSibling.textContent.trim() : 'No data available';
-  
+      const closestApproachElement = [...document.querySelectorAll('h1')].find(element => element.textContent.includes('Closest Approach of The Sun to Earth'));
+      const closestApproachDescription = closestApproachElement ? closestApproachElement.nextElementSibling.textContent.trim() : 'No data available';
+
       const closestApproachDateElement = [...keyInfoBoxes].find(box => box.querySelector('label')?.textContent.includes('Date'));
       const closestApproachDistanceKmElement = [...keyInfoBoxes].find(box => box.querySelector('label')?.textContent.includes('Distance Kilometers'));
       const closestApproachDistanceAUElement = [...keyInfoBoxes].find(box => box.querySelector('label')?.textContent.includes('Distance AU'));
@@ -232,10 +273,73 @@
       const distanceKilometers = distanceKilometersElement ? distanceKilometersElement.querySelector('ar')?.textContent.trim() : 'No data available';
       const distanceAU = distanceAUElement ? distanceAUElement.querySelector('ar')?.textContent.trim() : 'No data available';
       const lightTravelTime = lightTravelTimeElement ? lightTravelTimeElement.querySelector('ar')?.textContent.trim() : 'No data available';
-      const rise = riseElement ? riseElement.textContent.trim() : 'No data available';
-      const transit = transitElement ? transitElement.textContent.trim() : 'No data available';
-      const set = setElement ? setElement.textContent.trim() : 'No data available';
-  
+      var rise = riseElement ? riseElement.textContent.trim() : 'No data available';
+      var transit = transitElement ? transitElement.textContent.trim() : 'No data available';
+      var set = setElement ? setElement.textContent.trim() : 'No data available';
+
+      // Define regular expressions to match the patterns
+      const riseazimuthRegex = /Azimuth:\s+([-+]?\d+\.\d+°)/;
+      const riseTimeRegex = /RISE\s+(\d+:\d+)/;
+
+      const transitazimuthRegex = /Max altitude:\s+([-+]?\d+\.\d+°)/;
+      const transitTimeRegex = /TRANSIT\s+(\d+:\d+)/;
+
+      const setazimuthRegex = /Azimuth:\s+([-+]?\d+\.\d+°)/;
+      const setTimeRegex = /SET\s+(\d+:\d+)/;
+
+      // Extract the azimuth and rise time using the regular expressions
+      const riseAzimuthMatch = rise.match(riseazimuthRegex);
+      const riseTimeMatch = rise.match(riseTimeRegex);
+
+      // Check if matches were found and extract the values
+      const riseAzimuthValue = riseAzimuthMatch ? riseAzimuthMatch[1] : null;
+      const riseTimeValue = riseTimeMatch ? riseTimeMatch[1] : null;
+
+      rise = [riseAzimuthValue, riseTimeValue]
+
+      // Extract the azimuth and rise time using the regular expressions
+      const transitAzimuthMatch = transit.match(transitazimuthRegex);
+      const transitTimeMatch = transit.match(transitTimeRegex);
+
+      // Check if matches were found and extract the values
+      const transitazimuthValue = transitAzimuthMatch ? transitAzimuthMatch[1] : null;
+      const transitTimeValue = transitTimeMatch ? transitTimeMatch[1] : null;
+
+      console.log('Azimuth:', transitazimuthValue); // Output: Azimuth: 71.3
+      console.log('Azimuth:', transitTimeValue); // Output: Azimuth: 71.3
+      transit = [transitazimuthValue, transitTimeValue];
+
+       // Extract the azimuth and rise time using the regular expressions
+       const setAzimuthMatch = set.match(setTimeRegex);
+       const setTimeMatch = set.match(setazimuthRegex);
+ 
+       // Check if matches were found and extract the values
+       const setAzimuthValue = setAzimuthMatch ? setAzimuthMatch[1] : null;
+       const setTimeValue = setTimeMatch ? setTimeMatch[1] : null;
+ 
+       set = [setAzimuthValue, setTimeValue]
+
+      
+      // Extract the physical data table
+      const physicalDataElement = document.querySelector('table.objectdata');
+      const physicalDataRows = physicalDataElement ? physicalDataElement.querySelectorAll('tr.data') : [];
+
+      // Extract physical data from the rows
+      const physicalData = {};
+      physicalDataRows.forEach((row) => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 3) {
+          const parameter = cells[0].textContent.trim();
+          const value = cells[1].textContent.trim();
+          const relativeToEarth = cells[2].textContent.trim();
+          physicalData[parameter] = {
+            value: value,
+            relativeToEarth: relativeToEarth,
+          };
+        }
+      });
+
+      
       // Return the scraped data as an object
       return {
         sunInfo,
@@ -251,16 +355,16 @@
         closestApproachDate,
         closestApproachDistanceKm,
         closestApproachDistanceAU,
+        physicalData,
       };
     }, baseUrl);
   
     await browser.close();
-  
+    sunData['arrTable'] = secondTable;
+    console.log("sunData: ", sunData)
     return sunData;
   }
-  
-  
-  
+
   
 
   async function searchMessages(searchQuery, searchFilter) {

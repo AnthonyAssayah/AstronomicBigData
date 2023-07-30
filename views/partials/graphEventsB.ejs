@@ -1,0 +1,70 @@
+
+
+<div class="col-md-12">
+    <div class="card card-chart" >
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Astronomic Events Distribution by Activity</h4>
+        <p class="card-category">Distribution of astronomic events based on activity type</p>
+      </div>
+      <div class="card-body">
+        <div class="ct-chart" id="astronomicEventsByActivityChart"></div>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">access_time</i> Data updated 4 minutes ago
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function createAstronomicEventsByActivityChart() {
+      fetch('/api/events') // Fetch data from the API endpoint
+        .then((response) => response.json())
+        .then((data) => {
+          const events = data;
+  
+          const activityTypes = ["GRB", "Rise Brightness Apprentice", "UV Rise", "X-Ray Rise", "Comet"];
+          const activityCount = [0, 0, 0, 0, 0];
+  
+          events.forEach((event) => {
+            const activityIndex = activityTypes.indexOf(event.activity);
+            if (activityIndex !== -1) {
+              activityCount[activityIndex]++;
+            }
+          });
+  
+          new Chartist.Bar(
+            '#astronomicEventsByActivityChart',
+            {
+              labels: activityTypes,
+              series: [activityCount],
+            },
+            {
+              axisX: {
+                showLabel: true,
+              },
+              axisY: {
+                showLabel: true,
+                onlyInteger: true,
+              },
+            }
+          );
+        })
+        .catch((error) => {
+          console.error('Error fetching astronomic events:', error);
+        });
+    }
+  
+    window.addEventListener('load', createAstronomicEventsByActivityChart);
+  </script>
+  
+  <style>
+    /* Basic styling for the chart container */
+    .ct-chart {
+      height: 250px;
+      width: 100%;
+      overflow: hidden;
+    }
+  </style>
+  

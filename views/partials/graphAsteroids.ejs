@@ -6,7 +6,6 @@
           <p class="card-category">Distribution of asteroids that passed near the Earth in the last month</p>
         </div>
         <div class="card-body">
-          <!-- Use a div element to render the Plotly chart -->
           <div id="asteroidsChart"></div>
         </div>
       </div>
@@ -14,7 +13,7 @@
 </div>
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<!-- Rest of the code remains the same -->
+
 <script>
     // JavaScript code to render the asteroids chart
     function createAsteroidsChart() {
@@ -54,7 +53,7 @@
             xaxis: {
               type: 'date',
               title: 'Date',
-              tickformat: '%b %d', // Format the date ticks to display month and day
+              tickformat: '%b %d', 
             },
             yaxis: {
               title: 'Number of Asteroids',

@@ -1,8 +1,9 @@
 const { Kafka, Partitioners} = require("kafkajs");
 const fs = require('fs');
 
+
 async function sendMessageToKafka(topic, message) {
-  // Create a Kafka client
+  // Create a Kafka client 
   const kafka = new Kafka({
     brokers: ['social-rat-12153-us1-kafka.upstash.io:9092'],
     sasl: {

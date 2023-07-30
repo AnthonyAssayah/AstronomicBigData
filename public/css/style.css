@@ -1,0 +1,124 @@
+/* table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  table th {
+    background-color: #f2f2f2;
+  } */
+  
+
+/* Add the updated styles for the urgency square and cards */
+.square-card-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* Make the square a circle */
+    height: 100px; /* Set the height of the square icon */
+    width: 100px; /* Set the width of the square icon */
+    font-size: 24px; /* Adjust the font size for the number */
+    color: white; /* Set the text color to white */
+    font-weight: bold; /* Make the number bold */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    transition: background-color 0.3s ease; /* Add a transition for background color change */
+  }
+  
+  /* Add styling for different urgency levels */
+  .square-card-icon.green {
+    background-color: green;
+  }
+  .square-card-icon.yellow {
+    background-color: yellow;
+  }
+  .square-card-icon.orange {
+    background-color: orange;
+  }
+  .square-card-icon.red {
+    background-color: red;
+  }
+  
+  /* Add the UX effect for urgency level 5 */
+  .square-card-icon.red.urgent {
+    animation: blink 1s infinite; /* Apply the blinking animation */
+  }
+
+  .card-footer .stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ddd; /* Add a border at the top to create a line separator */
+    padding-top: 5px; /* Adjust the padding as needed */
+  }
+  
+
+  /* Update card design */
+  .card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgb(236, 236, 236);
+    padding: 16px;
+    margin: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.05); /* Apply a slight scale on hover */
+  }
+  
+/* Table row alternate background colors */
+/* Use the desired color for odd rows */
+.table tr:nth-child(odd) {
+  background-color: #f4ebcc;
+}
+
+/* Use the desired color for even rows */
+.table tr:nth-child(even) {
+  background-color: white;
+}
+
+/* Use the desired color for table header (first row) */
+.table thead th {
+  background-color: white;
+  color: black;
+}
+
+/* Add this rule to set the opacity of the background image */
+.sidebar::before {
+    content: "";
+    background-image: url("public/images/back.jpg");
+    opacity: 1; /* Increase the opacity value to make the image more visible */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    top: 0;
+    left: 0;
+  }
+  
+
+  /* Add background image to the dashboard */
+body.dashboard-page {
+  background-image: url('/images/astro.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+}
+
+/* Add a semi-transparent overlay to the background image */
+body.dashboard-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Adjust the opacity by changing the last value (0.4) */
+}
+
+  
