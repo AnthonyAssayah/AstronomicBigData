@@ -1,10 +1,7 @@
-const express = require('express');
 const axios = require('axios');
 const mongoose = require('mongoose');
 
-const app = express();
-const port = 3001;
-
+// MongoDB configuration
 const apiKey = '81c957b66481bc5ead3f7eefe35842d8';
 const weatherURL = 'http://api.openweathermap.org/data/2.5/weather';
 
@@ -33,6 +30,8 @@ const cities = [
   'Bogota',
   'Lima',
   'Mexico',
+  'Santiago',
+  'Buenos Aires',
 ];
 
 async function getWeatherData(city) {
@@ -67,18 +66,5 @@ async function fetchAllWeatherData() {
   }
   return allWeatherData;
 }
-
-app.get('/weather', async (req, res) => {
-  try {
-    const weatherData = await fetchAllWeatherData();
-    res.json(weatherData);
-  } catch (error) {
-    res.status(500).json({ error: 'Unable to fetch weather data' });
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Weather app listening on port ${port}`);
-});
 
 module.exports = { fetchAllWeatherData };
