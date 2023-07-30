@@ -1,29 +1,23 @@
 # Astronomic Big Data
 
-![Astronomic Big Data](https://github.com/AnthonyAssayah/AstronomicBigData/blob/master/assets/astronomy.jpg)
-
 ## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+- [Architecture ](#Architecture)
 
 ## Introduction
 
-Astronomic Big Data is an open-source project aimed at gathering, analyzing, and visualizing large-scale astronomical data. The project aims to facilitate research and exploration in the field of astronomy by providing accessible tools and resources.
+Astronomic Big Data is an project aiming on data transfer , web scrapping , UI 
 
 ## Features
 
-- Data Collection: The project includes scripts and utilities to collect data from various astronomical sources, such as telescopes, observatories, and public databases.
+- Data Collection: The project includes scripts and utilities to collect data from various astronomical sources, such as NASA api , and private databases.
 
 - Data Processing: Astronomic Big Data offers data processing pipelines to clean, filter, and transform the collected raw data into a structured and usable format.
 
 - Data Visualization: The project provides interactive visualizations to explore astronomical data and gain insights into celestial objects, events, and phenomena.
-
-- Community-Driven: This project encourages contributions from the astronomy and data science community, fostering collaboration and improvements over time.
 
 ## Installation
 
@@ -33,3 +27,15 @@ To use Astronomic Big Data, follow these installation steps:
 
    ```bash
    git clone https://github.com/AnthonyAssayah/AstronomicBigData.git
+
+2. Install all the required modules
+    ```bash
+   npm install
+
+3. Build and run the docker-compose
+   ```bash
+   docker-compose -f elasticsearch-kibana-docker-compose.yml -d
+   
+## Architecture 
+
+![image](https://github.com/AnthonyAssayah/AstronomicBigData/assets/92504985/d09b2941-1fe9-4f54-99f9-d12359764199)
