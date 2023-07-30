@@ -159,7 +159,6 @@
   app.get('/sun', async (req, res) => {
     try {
       const sunData = await scrapeSunData();
-      console.log('Sun Data:', sunData); 
 
       res.render('pages/sun', { sunData });
     } catch (error) {
@@ -167,8 +166,56 @@
       res.status(500).send('Internal Server Error');
     }
   });
+
+  // New route for API endpoint to fetch Sun Distribution data for the chart
+  app.get('/api/sun', async (req, res) => {
+    try {
+      const sunData = await scrapegraphSun();
+      res.json(sunData);
+    } catch (error) {
+      console.error('Error fetching Sun data:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+
+  // Route to render the /sun view
+  async function scrapegraphSun() {
+    const baseUrl = 'https://theskylive.com';
+    const url = `${baseUrl}/sun-info`;
   
+    const response = await axios.get(url);
   
+    const $ = cheerio.load(response.data);
+  
+    const arr = [];
+    $('.data').each(function(index, element) {
+      arr.push($(element).text());
+    });
+  
+    const table = arr.slice(6);
+  
+    const sunData = table.map(item => {
+      const [date, , , , apparentDiameter, ,] = item
+        .trim()
+        .split('\n')
+        .filter(item => !/^\t+$/.test(item));
+  
+      return {
+        date: date.replace(/\t/g, ''),
+        apparentDiameter: apparentDiameter.replace(/\t/g, ''),
+      };
+    });
+  
+    return sunData;
+  }
+  
+  // Example usage:
+  scrapegraphSun()
+    .then(data => console.log(data))
+    .catch(err => console.error('Error:', err));
+
+
 
   async function scrapeSunData() {
     const baseUrl = 'https://theskylive.com';
@@ -235,7 +282,6 @@
       const transitElement = document.querySelector('div.transit');
       const setElement = document.querySelector('div.set');
 
-      console.log("riseElement: ", riseElement);
   
       // Extract the image URL of the Sun
       const imageElement = document.querySelector('.sun_container img');
@@ -305,8 +351,6 @@
       const transitazimuthValue = transitAzimuthMatch ? transitAzimuthMatch[1] : null;
       const transitTimeValue = transitTimeMatch ? transitTimeMatch[1] : null;
 
-      console.log('Azimuth:', transitazimuthValue); // Output: Azimuth: 71.3
-      console.log('Azimuth:', transitTimeValue); // Output: Azimuth: 71.3
       transit = [transitazimuthValue, transitTimeValue];
 
        // Extract the azimuth and rise time using the regular expressions
@@ -361,7 +405,6 @@
   
     await browser.close();
     sunData['arrTable'] = secondTable;
-    console.log("sunData: ", sunData)
     return sunData;
   }
 

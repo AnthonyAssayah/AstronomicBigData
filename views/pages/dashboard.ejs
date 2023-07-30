@@ -1,3 +1,4 @@
+<!-- This is the dashboard page, where the user can see the data in cards and graphs -->
 
 <!DOCTYPE html>
 <html>
@@ -7,45 +8,55 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css"><!--ariel ws -->
     <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body class="" onload="setWs()">
   <div class="wrapper ">
     <%- include("../partials/sidebar") %>
-      <div class="main-panel">
-        <%- include("../partials/navbar") %>
+      <div class="main-panel">  
           <div class="content">
             <div class="container-fluid">
-              <div class="row">
-                <!--start-->
+              <div class="welcome-message" >
+                  <h1>Welcome to the <span class="cool-font">Astronomical Big Data Dashboard! 🚀🌌</span></h1>
+                </h1>
+              </div>
+              <div class="row" style="margin-top: 50px;">
+            
                 <% cards.forEach(function(card) { %>
                   <%- include("../partials/card",card) %>
                     <% }); %>
-                      <!--end-->
+                   
               </div>
 
-              <!-- New Code: Display the four most recent messages in cards -->
-              <div class="row">
-                <% const lastFourMessages = messages.slice(Math.max(messages.length - 4, 0)); %>
-                <% lastFourMessages.forEach(function(message, index) { %>
-                  <%- include("../partials/card", {
-                    districtId: `messageCard-${index}`,
-                    activity: message.activity, // Add activity field
-                    title: message.title,
-                    observatory: message.observatory, // Add observatory field
-                    location: message.location, // Add location field
-                    value: message.urgency,
-                    unit: 'Urgency',
-                    icon: 'priority_high',
-                    fotterIcon: 'access_time',
-                    fotterText: message.time
-                  }) %>
-                <% }); %>
-              </div>
+          
+          <div class="row">
+            <% const lastFourMessages = messages.slice(Math.max(messages.length - 4, 0)); %>
+            <% lastFourMessages.forEach(function(message, index) { %>
+              <% let urgencyClass = ''; %>
+              <% if (message.urgency >= 4) { %>
+                <% urgencyClass = 'red'; %>
+              <% } %>
+              <%- include("../partials/card", {
+                districtId: `messageCard-${index}`,
+                activity: message.activity, // Add activity field
+                title: message.title,
+                observatory: message.observatory, // Add observatory field
+                location: message.location, // Add location field
+                value: message.urgency,
+                unit: 'Urgency',
+                icon: 'priority_high',
+                fotterIcon: 'access_time',
+                fotterText: message.time,
+                customClass: urgencyClass, // Apply the urgency class to the card
+              }) %>
+            <% }); %>
+          </div>
+
 
               <!-- New Code: Display the table with the 5 first lines of asteroids data -->
-              <div class="col-md-12">
+              <div class="col-md-12" style="margin-top: 60px;">
                 <div class="card">
                   <div class="card-header card-header-primary">
                     <h4 class="card-title">Asteroids</h4>
@@ -83,7 +94,7 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row" style="margin-top: 60px;">
                 <div class="col-md-6">
                   <%- include("../partials/graphEvents") %>
                 </div>
@@ -91,7 +102,7 @@
                   <%- include("../partials/graphEventsB") %>
                 </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12" style="margin-top: 60px;">
                   <%- include("../partials/graphAsteroids") %>
                 </div>
             </div>

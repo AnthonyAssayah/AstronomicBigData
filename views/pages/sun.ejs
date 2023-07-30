@@ -1,246 +1,144 @@
 <!-- sun.ejs -->
 <!DOCTYPE html>
 <html>
+
 <head>
   <%- include("../partials/headers") %>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-  <style>
-
-    .card {
-      margin-bottom: 30px;
-      border: 0;
-      border-radius: 6px;
-      color: rgba(0, 0, 0, 0.87);
-      background: #fff;
-      width: 100%;
-      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14), 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 4px 5px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .card .card-header {
-      background-color: #f5f5f5;
-      padding: 15px 20px;
-      border-radius: 3px;
-      margin-top: -30px;
-      border: 0;
-      margin-bottom: 15px;
-    }
-
-    .card .card-header-primary {
-      background: linear-gradient(60deg, #ffa726, #fb8c00);
-    }
-
-    .card .card-body {
-      padding: 0.9375rem 20px;
-      position: relative;
-    }
-
-    .card .table {
-      margin-bottom: 0;
-    }
-
-    .card .card-category {
-      margin: 0;
-      font-weight: 300;
-      font-size: 0.75rem; /
-    }
-
-    .card .card-title {
-      margin: 0;
-      line-height: 1.42857143;
-    }
-
-    .card .card-title:first-child {
-      margin-top: 0.25rem;
-    }
-
-    .card .card-title + .card-category {
-      margin-bottom: 0;
-    }
-
-    .card .card-title.card-title-sm {
-      font-size: 1.25em;
-    }
-
-    .card .card-footer {
-      margin: 0 20px 10px;
-      padding-top: 10px;
-      border-top: 1px solid #eeeeee;
-    }
-
-    .card .card-footer p {
-      color: #999999;
-      margin: 0;
-    }
-
-    .card .card-footer p:first-child {
-      margin-left: 0;
-    }
-
-    .card .card-footer img {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 5px;
-    }
-
-   
-    .sunspots-frame {
-      text-align: center;
-      padding: 20px;
-      border: 2px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 20px;
-    }
-
-    .sunspots-frame h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    .sun-image img {
-      max-width: 100%;
-    }
-
-    .sky-map-image img {
-      max-width: 100%;
-    }
-
-    .sun-title-container {
-          position: relative;
-          text-align: center;
-          margin-bottom: 20px;
-    }
-
-    .sun-title {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 36px;
-      color: #FF9800; /* Adjust the color as needed */
-      margin-bottom: 10px;
-    }
-
-    .sun-icon {
-      position: absolute;
-      top: -60px; /* Adjust the distance from the top */
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 50px; /* Adjust the size of the sun icon */
-      color: #FF9800;
-    }
-
-  </style>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 
 
 </head>
+
+
 <body class="" onload="setWs()">
   <div class="wrapper">
     <%- include("../partials/sidebar") %>
-    <div class="main-panel">
-      <%- include("../partials/navbar") %>
-      <div class="content">
-        <div class="container-fluid">
-          <div class="sun-title-container">
-            <span class="sun-icon">☀️</span>
-            <div class="sun-title">Sun Information</div>
-          </div>
+      <div class="main-panel">
+        <%- include("../partials/navbar") %>
+          <div class="content">
+            <div class="container-fluid">
+              <div class="sun-title-container">
+                <span class="sun-icon">☀️</span>
+                <div class="sun-title" style="margin-top: 30px;">Sun Information</div>
+              </div>
 
-
-
-<div class="row">
-  <!-- Sun Distance Data -->
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header card-header-primary">
-        <h4 class="card-title">Sun Distance Data</h4>
-        <p class="card-category" style="font-size: 0.95rem;">Information about the Sun's distance from Earth</p>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-sm">
-            <thead class="text-primary">
-              <th>Distance Type</th>
-              <th>Value</th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Distance Kilometers:</td>
-                <td><%= sunData.distanceKilometers %></td>
-              </tr>
-              <tr>
-                <td>Distance AU:</td>
-                <td><%= sunData.distanceAU %></td>
-              </tr>
-              <tr>
-                <td>Light Travel Time:</td>
-                <td><%= sunData.lightTravelTime %></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Sun Time Data -->
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header card-header-primary">
-        <h4 class="card-title">Sun Time Data</h4>
-        <p class="card-category" style="font-size: 0.95rem;">Information about the Sun's times</p>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-sm">
-            <thead class="text-primary">
-              <th>Time Event</th>
-              <th>Azimuth</th>
-              <th>Time</th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Sunrise</td>
-                <td><%= sunData.rise[0] %></td>
-                <td><%= sunData.rise[1] %></td>
-              </tr>
-              <tr>
-                <td>Transit</td>
-                <td><%= sunData.transit[0] %></td>
-                <td><%= sunData.transit[1] %></td>
-              </tr>
-              <tr>
-                <td>Sunset</td>
-                <td><%= sunData.set[1] %></td>
-                <td><%= sunData.set[0] %></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-               <!-- Add frame for Today's Sunspots Activity -->
-               <div class="col-md-8 mx-auto">
-                <div class="card">
-                  <div class="card-header card-header-primary">
-                    <h4 class="card-title">Today's Sunspots Activity</h4>
-                  </div>
-                  <!-- Display the scraped image -->
-                  <% if (sunData.imageUrl) { %>
-                    <div class="sun-image text-center">
-                      <img src="<%= sunData.imageUrl %>" alt="Sun Image" class="d-block mx-auto">
+              
+                <div class="row" style="margin-top: 30px; margin-bottom: 50px;">
+                  <!-- Sun Distance Data -->
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header card-header-primary">
+                        <h4 class="card-title">Sun Distance Data</h4>
+                        <p class="card-category" style="font-size: 0.95rem;">Information about the Sun's distance from
+                          Earth</p>
+                      </div>
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table table-sm">
+                            <thead class="text-primary">
+                              <th>Distance Type</th>
+                              <th>Value</th>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Distance Kilometers:</td>
+                                <td>
+                                  <%= sunData.distanceKilometers %>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Distance AU:</td>
+                                <td>
+                                  <%= sunData.distanceAU %>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Light Travel Time:</td>
+                                <td>
+                                  <%= sunData.lightTravelTime %>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
-                  <% } else { %>
-                    <p class="text-center">No image available</p>
-                  <% } %>
+                  </div>
+
+                  <!-- Sun Time Data -->
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header card-header-primary">
+                        <h4 class="card-title">Sun Time Data</h4>
+                        <p class="card-category" style="font-size: 0.95rem;">Information about the Sun's times</p>
+                      </div>
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table table-sm">
+                            <thead class="text-primary">
+                              <th>Time Event</th>
+                              <th>Azimuth</th>
+                              <th>Time</th>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Sunrise</td>
+                                <td>
+                                  <%= sunData.rise[0] %>
+                                </td>
+                                <td>
+                                  <%= sunData.rise[1] %>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Transit</td>
+                                <td>
+                                  <%= sunData.transit[0] %>
+                                </td>
+                                <td>
+                                  <%= sunData.transit[1] %>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Sunset</td>
+                                <td>
+                                  <%= sunData.set[1] %>
+                                </td>
+                                <td>
+                                  <%= sunData.set[0] %>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+
+
+              <!-- Add frame for Today's Sunspots Activity -->
+              
+                <div class="col-md-8 mx-auto" style=" margin-top: 40px;">
+                  <div class="card">
+                    <div class="card-header card-header-primary">
+                      <h4 class="card-title">Today's Sunspots Activity</h4>
+                    </div>
+                    <!-- Display the scraped image -->
+                    <% if (sunData.imageUrl) { %>
+                      <div class="sun-image text-center">
+                        <img src="<%= sunData.imageUrl %>" alt="Sun Image" class="d-block mx-auto">
+                      </div>
+                      <% } else { %>
+                        <p class="text-center">No image available</p>
+                        <% } %>
+                  </div>
                 </div>
               </div>
-              
-              <div class="col-md-8 mx-auto">
+
+              <div class="col-md-8 mx-auto" style="margin-top: 50px;">
                 <div class="card">
                   <div class="card-header card-header-primary">
                     <h4 class="card-title">Deep sky finder chart for The Sun</h4>
@@ -250,191 +148,246 @@
                     <div class="sky-map-image text-center">
                       <img src="<%= sunData.skyMapImageUrl %>" alt="Sky Map of the Sun" class="d-block mx-auto">
                     </div>
-                  <% } else { %>
-                    <p class="text-center">No sky map image available</p>
-                  <% } %>
+                    <% } else { %>
+                      <p class="text-center">No sky map image available</p>
+                      <% } %>
+                </div>
+              
+
+              <!-- Closest Approach of The Sun to Earth -->
+
+              <div class="card" style="margin-top: 50px;">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Closest Approach Data</h4>
+                  <p class="card-category" style="font-size: 0.75rem;">Information about the closest approach of the Sun
+                    to Earth</p> <!-- Increased the font size -->
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead class="text-primary">
+                        <th>Property</th>
+                        <th>Value</th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Date</td>
+                          <td>
+                            <%= sunData.closestApproachDate %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Distance Kilometers</td>
+                          <td>
+                            <%= sunData.closestApproachDistanceKm %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Distance AU</td>
+                          <td>
+                            <%= sunData.closestApproachDistanceAU %>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-              
-                                <!-- Closest Approach of The Sun to Earth -->
-            
-                  <div class="card">
-                    <div class="card-header card-header-primary">
-                      <h4 class="card-title">Closest Approach Data</h4>
-                      <p class="card-category" style="font-size: 0.75rem;">Information about the closest approach of the Sun to Earth</p> <!-- Increased the font size -->
+
+              <!-- ... (existing code) ... -->
+
+              <!-- The Sun Physical Data -->
+              <div class="card" style="margin-top: 50px;">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">Physical Data</h4>
+                  <p class="card-category" style="font-size: 0.75rem;">Information about the physical parameters of the
+                    Sun</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead class="text-primary">
+                        <tr>
+                          <th class="left">Physical Parameter</th>
+                          <th class="right">Value</th>
+                          <th class="right">Relative to Earth</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Diameter</td>
+                          <td>
+                            <%= sunData.physicalData.Diameter.value %>
+                          </td>
+                          <td>
+                            <%= sunData.physicalData.Diameter.relativeToEarth %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Mass</td>
+                          <td>
+                            <%= sunData.physicalData.Mass.value %>
+                          </td>
+                          <td>
+                            <%= sunData.physicalData.Mass.relativeToEarth %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Density</td>
+                          <td>
+                            <%= sunData.physicalData.Density.value %>
+                          </td>
+                          <td>
+                            <%= sunData.physicalData.Density.relativeToEarth %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Escape Velocity</td>
+                          <td>
+                            <%= sunData.physicalData['Escape Velocity'].value %>
+                          </td>
+                          <td>
+                            <%= sunData.physicalData['Escape Velocity'].relativeToEarth %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Sideral Rotation</td>
+                          <td>
+                            <%= sunData.physicalData['Sideral Rotation'].value %>
+                          </td>
+                          <td>
+                            <%= sunData.physicalData['Sideral Rotation'].relativeToEarth %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Absolute Magnitude</td>
+                          <td>
+                            <%= sunData.physicalData['Absolute Magnitude'].value%>
+                          </td>
+                          <td>
+                            <%= sunData.physicalData['Absolute Magnitude'].relativeToEarth%>
+                          </td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- New Table for sun15DaysEphemerisData -->
+              <div class="col-md-12" style="margin-top: 50px;">
+                <div class="card">
+                  <div class="card-header card-header-primary">
+                    <h4 class="card-title">Sun Ephemeris Data for the Next 15 Days</h4>
+                    <p class="card-category" style="font-size: 0.75rem;">Ephemeris data for the Sun for the next 15 days
+                    </p>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-sm">
+                        <thead class="text-primary">
+                          <th>Date</th>
+                          <th>Right Ascension</th>
+                          <th>Declination</th>
+                          <th>Magnitude</th>
+                          <th>Apparent Diameter</th>
+                          <th>Constellation</th>
+                        </thead>
+                        <tbody>
+                          <% for (const entry of sunData.arrTable) { %>
+                            <tr>
+                              <td>
+                                <%= entry.date %>
+                              </td>
+                              <td>
+                                <%= entry.rightAscension %>
+                              </td>
+                              <td>
+                                <%= entry.declination %>
+                              </td>
+                              <td>
+                                <%= entry.magnitude %>
+                              </td>
+                              <td>
+                                <%= entry.apparentDiameter %>
+                              </td>
+                              <td>
+                                <%= entry.constellation %>
+                              </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                      </table>
                     </div>
-                    <div class="card-body">
-                      <div class="table-responsive">
-                        <table class="table table-sm"> 
-                          <thead class="text-primary">
-                            <th>Property</th>
-                            <th>Value</th>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Date</td>
-                              <td><%= sunData.closestApproachDate %></td>
-                            </tr>
-                            <tr>
-                              <td>Distance Kilometers</td>
-                              <td><%= sunData.closestApproachDistanceKm %></td>
-                            </tr>
-                            <tr>
-                              <td>Distance AU</td>
-                              <td><%= sunData.closestApproachDistanceAU %></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+                  <div class="col-md-12" style="margin-top: 50px;">
+                    <div class="card">
+                      <%- include("../partials/graphSun") %>
                     </div>
                   </div>
 
-                  <!-- ... (existing code) ... -->
 
-<!-- The Sun Physical Data -->
-<div class="card">
-  <div class="card-header card-header-primary">
-    <h4 class="card-title">Physical Data</h4>
-    <p class="card-category" style="font-size: 0.75rem;">Information about the physical parameters of the Sun</p>
-  </div>
-  <div class="card-body">
-    <div class="table-responsive">
-      <table class="table table-sm">
-        <thead class="text-primary">
-          <tr>
-            <th class="left">Physical Parameter</th>
-            <th class="right">Value</th>
-            <th class="right">Relative to Earth</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Diameter</td>
-            <td><%= sunData.physicalData.Diameter.value %></td>
-            <td><%= sunData.physicalData.Diameter.relativeToEarth %></td>
-          </tr>
-          <tr>
-            <td>Mass</td>
-            <td><%= sunData.physicalData.Mass.value %></td>
-            <td><%= sunData.physicalData.Mass.relativeToEarth %></td>
-          </tr>
-          <tr>
-            <td>Density</td>
-            <td><%= sunData.physicalData.Density.value %></td>
-            <td><%= sunData.physicalData.Density.relativeToEarth %></td>
-          </tr>
-          <tr>
-            <td>Escape Velocity</td>
-            <td><%= sunData.physicalData['Escape Velocity'].value %></td>
-            <td><%= sunData.physicalData['Escape Velocity'].relativeToEarth %></td>
-          </tr>
-          <tr>
-            <td>Sideral Rotation</td>
-            <td><%= sunData.physicalData['Sideral Rotation'].value %></td>
-            <td><%= sunData.physicalData['Sideral Rotation'].relativeToEarth %></td>
-          </tr>
-          <tr>
-            <td>Absolute Magnitude</td>
-            <td><%= sunData.physicalData['Absolute Magnitude'].value%></td>
-            <td><%= sunData.physicalData['Absolute Magnitude'].relativeToEarth%></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
 
-<!-- New Table for sun15DaysEphemerisData -->
-<div class="col-md-12">
-  <div class="card">
-    <div class="card-header card-header-primary">
-      <h4 class="card-title">Sun Ephemeris Data for the Next 15 Days</h4>
-      <p class="card-category" style="font-size: 0.75rem;">Ephemeris data for the Sun for the next 15 days</p>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-sm">
-          <thead class="text-primary">
-            <th>Date</th>
-            <th>Right Ascension</th>
-            <th>Declination</th>
-            <th>Magnitude</th>
-            <th>Apparent Diameter</th>
-            <th>Constellation</th>
-          </thead>
-          <tbody>
-            <% for (const entry of sunData.arrTable) { %>
-              <tr>
-                <td><%= entry.date %></td>
-                <td><%= entry.rightAscension %></td>
-                <td><%= entry.declination %></td>
-                <td><%= entry.magnitude %></td>
-                <td><%= entry.apparentDiameter %></td>
-                <td><%= entry.constellation %></td>
-              </tr>
-            <% } %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+                  <script>
+                    function createDataPoints(data) {
+                      const container = document.getElementById('graph-container');
 
-<script>
-function createDataPoints(data) {
-  const container = document.getElementById('graph-container');
+                      const maxDiameter = Math.max(...data.map(item => parseFloat(item.apparentDiameter.replace(',', '.'))));
+                      const minDiameter = Math.min(...data.map(item => parseFloat(item.apparentDiameter.replace(',', '.'))));
 
-  const maxDiameter = Math.max(...data.map(item => parseFloat(item.apparentDiameter.replace(',', '.'))));
-  const minDiameter = Math.min(...data.map(item => parseFloat(item.apparentDiameter.replace(',', '.'))));
+                      const dateIncrement = container.clientWidth / (data.length - 1);
 
-  const dateIncrement = container.clientWidth / (data.length - 1);
+                      for (let i = 0; i < data.length; i++) {
+                        const { date, apparentDiameter } = data[i];
+                        const diameterValue = parseFloat(apparentDiameter.replace(',', '.'));
 
-  for (let i = 0; i < data.length; i++) {
-    const { date, apparentDiameter } = data[i];
-    const diameterValue = parseFloat(apparentDiameter.replace(',', '.'));
+                        const dataPoint = document.createElement('div');
+                        dataPoint.className = 'data-point';
+                        dataPoint.style.left = dateIncrement * i + 'px';
+                        dataPoint.style.bottom = ((diameterValue - minDiameter) / (maxDiameter - minDiameter)) * 100 + '%';
+                        container.appendChild(dataPoint);
 
-    const dataPoint = document.createElement('div');
-    dataPoint.className = 'data-point';
-    dataPoint.style.left = dateIncrement * i + 'px';
-    dataPoint.style.bottom = ((diameterValue - minDiameter) / (maxDiameter - minDiameter)) * 100 + '%';
-    container.appendChild(dataPoint);
+                        const xLabel = document.createElement('div');
+                        xLabel.className = 'x-label';
+                        xLabel.textContent = date;
+                        xLabel.style.left = dateIncrement * i + 'px';
+                        container.appendChild(xLabel);
 
-    const xLabel = document.createElement('div');
-    xLabel.className = 'x-label';
-    xLabel.textContent = date;
-    xLabel.style.left = dateIncrement * i + 'px';
-    container.appendChild(xLabel);
+                        const yLabel = document.createElement('div');
+                        yLabel.className = 'y-label';
+                        yLabel.textContent = apparentDiameter;
+                        yLabel.style.bottom = ((diameterValue - minDiameter) / (maxDiameter - minDiameter)) * 100 + '%';
+                        container.appendChild(yLabel);
+                      }
+                    }
 
-    const yLabel = document.createElement('div');
-    yLabel.className = 'y-label';
-    yLabel.textContent = apparentDiameter;
-    yLabel.style.bottom = ((diameterValue - minDiameter) / (maxDiameter - minDiameter)) * 100 + '%';
-    container.appendChild(yLabel);
-  }
-}
+                    // Fetch the JSON data (you can replace this with your API/fetch call)
+                    // In this example, we'll use the provided JSON data directly.
+                    // Replace the following line with your fetch/API call when using dynamic data.
+                    fetch('your-api-url')
+                      .then(response => response.json())
+                      .then(data => createDataPoints(data))
+                      .catch(error => console.error('Error fetching data:', error));
 
-// Fetch the JSON data (you can replace this with your API/fetch call)
-// In this example, we'll use the provided JSON data directly.
-// Replace the following line with your fetch/API call when using dynamic data.
-fetch('your-api-url')
-  .then(response => response.json())
-  .then(data => createDataPoints(data))
-  .catch(error => console.error('Error fetching data:', error));
-
-// For this example, we'll use the provided JSON data directly.
-createDataPoints();
-</script>
+                    // For this example, we'll use the provided JSON data directly.
+                    createDataPoints();
+                  </script>
 
 
 
                 </div>
               </div>
-            </div>        
-        </div>
+            </div>
+          </div>
       </div>
-    </div>
   </div>
-  
+  </div>
+
 </body>
+
 </html>

@@ -1,30 +1,23 @@
-<!--
-=========================================================
-Material Dashboard - v2.1.2
-=========================================================
-
-Product Page: https://www.creative-tim.com/product/material-dashboard
-Copyright 2020 Creative Tim (https://www.creative-tim.com)
-Coded by Creative Tim
-
-=========================================================
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+ <!-- This is the Events page for the astronomic events  -->
+ 
 <!DOCTYPE html>
 <html>
 
 <head>
   <%- include("../partials/headers") %>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <!--ariel ws -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="" onload="setWs()">
   <div class="wrapper ">
     <%- include("../partials/sidebar") %>
     <div class="main-panel">
-      <%- include("../partials/navbar") %>
       <div class="content">
         <div class="container-fluid">
+          <div class="cool-title" style="font-family: 'Lato', sans-serif; font-size: 40px; text-align: center; margin-bottom: 60px;">
+            ✨🌟 Astronomic Events 🌟✨
+          </div>
           <div class="row">
             <!--start-->
             <% cards.forEach(function(card) { %>
@@ -53,7 +46,7 @@ The above copyright notice and this permission notice shall be included in all c
           </div>
 
 
-            <div class="col-md-12">
+            <div class="col-md-12" style="margin-top: 60px;">
               <!-- Search Bar for Astronomic Events -->
               <div class="card">
                 <div class="card-header card-header-info">
@@ -90,7 +83,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 
             <!-- Table to display astronomic messages -->
-            <div class="col-md-12">
+            <div class="col-md-12" style="margin-top: 60px;">
               <div class="card">
                 <div class="card-header card-header-primary">
                   <h4 class="card-title">Astronomic Events</h4>

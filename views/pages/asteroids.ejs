@@ -1,136 +1,127 @@
+<!-- This is the asteroids page for the asteroids Nasa data -->
 
 <!DOCTYPE html>
 <html>
 
 <head>
   <%- include("../partials/headers") %>
-  <style>
-   .title-container {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px 0;
-    }
-
-    .title {
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      font-size: 36px;
-      color: #022c85; /* Adjust the color as needed */
-      margin-left: 10px;
-    }
-
-    .nasa-logo {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: -37px; /* Adjust the vertical position of the logo */
-      max-height: 60px; /* Adjust the logo size as needed */
-    }
-
-  </style>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body class="" onload="setWs()">
   <div class="wrapper ">
     <%- include("../partials/sidebar") %>
       <div class="main-panel">
-        <%- include("../partials/navbar") %>
-              <div class="content">
-                <div class="container-fluid">
-                  <div class="title-container">
-                    <img class="nasa-logo" src="images/nasa.png" alt="NASA Logo">
-                    <div class="title">NASA Asteroid</div>
+          <div class="content">
+            <div class="container-fluid">
+              <div class="title-container">
+                <img class="nasa-logo" src="images/nasa.png" alt="NASA Logo">
+                <div class="title">NASA Asteroid</div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-info">
+                      <h4 class="card-title">Search Asteroids</h4>
+                      <p class="card-category">Filter asteroids by ID or Name</p>
+                    </div>
+                    <div class="card-body">
+                      <form id="searchForm" action="/asteroids" method="GET">
+                        <div class="form-row">
+                          <div class="col-md-6">
+                            <label for="searchQuery">Search Query:</label>
+                            <input type="text" class="form-control" id="searchQuery" name="search"
+                              placeholder="Enter search query" value="<%= searchQuery || '' %>">
+                          </div>
+                          <div class="col-md-3">
+                            <label for="filterOption">Filter By:</label>
+                            <select class="form-control" id="filterOption" name="filter">
+                              <option value="">--Select Filter--</option>
+                              <option value="id" <%=searchFilter==='id' ? 'selected' : '' %>>ID</option>
+                              <option value="name" <%=searchFilter==='name' ? 'selected' : '' %>>Name</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label>&nbsp;</label><br>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                          <div class="card">
-                            <div class="card-header card-header-info">
-                              <h4 class="card-title">Search Asteroids</h4>
-                              <p class="card-category">Filter asteroids by ID or Name</p>
-                              </div>
-                               <div class="card-body">
-                              <form id="searchForm" action="/asteroids" method="GET">
-                                <div class="form-row">
-                                  <div class="col-md-6">
-                                    <label for="searchQuery">Search Query:</label>
-                                    <input type="text" class="form-control" id="searchQuery" name="search" placeholder="Enter search query" value="<%= searchQuery || '' %>">
-                                  </div>
-                                  <div class="col-md-3">
-                                    <label for="filterOption">Filter By:</label>
-                                    <select class="form-control" id="filterOption" name="filter">
-                                      <option value="">--Select Filter--</option>
-                                      <option value="id" <%= searchFilter === 'id' ? 'selected' : '' %>>ID</option>
-                                      <option value="name" <%= searchFilter === 'name' ? 'selected' : '' %>>Name</option>
-                                    </select>
-                                  </div>
-                                  <div class="col-md-3">
-                                    <label>&nbsp;</label><br>
-                                    <button type="submit" class="btn btn-primary">Search</button>
-                                    <button type="button" class="btn btn-secondary" onclick="clearSearch()">Clear</button>
-                                  </div>
-                                </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>         
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="card">
-                        <div class="card-header card-header-primary">
-                          <h4 class="card-title">Asteroids</h4>
-                          <p class="card-category">List of asteroids from NASA</p>
-                        </div>
-                        <div class="card-body">
-                          <div class="table-responsive">
-                            <table class="table">
-                              <thead class="text-primary">
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Magnitude (mag)</th>
-                                <th>Diameter (m)</th>
-                                <th>Close Approach Date</th>
-                                <th>Distance to Earth (km)</th>
-                                <th>Velocity (km/s)</th>
-                              </thead>
-                              <tbody>
-                                <% asteroids.forEach(function(asteroid) { %>
-                                  <tr>
-                                    <td><%= asteroid.id %></td>
-                                    <td><%= asteroid.name %></td>
-                                    <td><%= asteroid.absolute_magnitude_h.toFixed(2) %></td>
-                                    <td><%= `${asteroid.estimated_diameter.meters.estimated_diameter_min.toFixed(0)} - ${asteroid.estimated_diameter.meters.estimated_diameter_max.toFixed(0)}` %> m</td>
-                                    <td><%= asteroid.close_approach_data[0].close_approach_date_full %></td>
-                                    <td><%= asteroid.close_approach_data[0].miss_distance.kilometers %></td>
-                                    <td><%= asteroid.close_approach_data[0].relative_velocity.kilometers_per_second %></td>
-                                  </tr>
-                                <% }) %>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 70px;">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-primary">
+                      <h4 class="card-title">Asteroids</h4>
+                      <p class="card-category">List of asteroids from NASA</p>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead class="text-primary">
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Magnitude (mag)</th>
+                            <th>Diameter (m)</th>
+                            <th>Close Approach Date</th>
+                            <th>Distance to Earth (km)</th>
+                            <th>Velocity (km/s)</th>
+                          </thead>
+                          <tbody>
+                            <% asteroids.forEach(function(asteroid) { %>
+                              <tr>
+                                <td>
+                                  <%= asteroid.id %>
+                                </td>
+                                <td>
+                                  <%= asteroid.name %>
+                                </td>
+                                <td>
+                                  <%= asteroid.absolute_magnitude_h.toFixed(2) %>
+                                </td>
+                                <td>
+                                  <%= `${asteroid.estimated_diameter.meters.estimated_diameter_min.toFixed(0)} -
+                                    ${asteroid.estimated_diameter.meters.estimated_diameter_max.toFixed(0)}` %> m
+                                </td>
+                                <td>
+                                  <%= asteroid.close_approach_data[0].close_approach_date_full %>
+                                </td>
+                                <td>
+                                  <%= asteroid.close_approach_data[0].miss_distance.kilometers %>
+                                </td>
+                                <td>
+                                  <%= asteroid.close_approach_data[0].relative_velocity.kilometers_per_second %>
+                                </td>
+                              </tr>
+                              <% }) %>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
-                </div>  
+                </div>
+              </div>
+            </div>
           </div>
       </div>
-  </div>        
+  </div>
 </body>
 
 
 
 <script>
-    // Function to update the table with search results
-    function updateTable(asteroids) {
-      const tableBody = document.querySelector('tbody');
-      tableBody.innerHTML = '';
-  
-      asteroids.forEach((asteroid) => {
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
+  // Function to update the table with search results
+  function updateTable(asteroids) {
+    const tableBody = document.querySelector('tbody');
+    tableBody.innerHTML = '';
+
+    asteroids.forEach((asteroid) => {
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
           <td>${asteroid.id}</td>
           <td>${asteroid.name}</td>
           <td>${asteroid.absolute_magnitude_h.toFixed(2)}</td>
@@ -139,40 +130,40 @@
           <td>${asteroid.close_approach_data[0].miss_distance.kilometers}</td>
           <td>${asteroid.close_approach_data[0].relative_velocity.kilometers_per_second}</td>
         `;
-        tableBody.appendChild(newRow);
-      });
-    }
-  
-    // Function to handle the search form submission using Socket.IO
-    function search() {
-      const searchQuery = document.getElementById('searchQuery').value;
-      const searchFilter = document.getElementById('filterOption').value;
-  
-      // Send the search query and filter to the server via Socket.IO
-      socket.emit('search', { search: searchQuery, filter: searchFilter });
-    }
-  
-    // Function to clear the search form and fetch all asteroids again
-    function clearSearch() {
-      document.getElementById('searchQuery').value = '';
-      document.getElementById('filterOption').value = '';
-      search();
-    }
-  
-    // Socket.IO connection
-    var socket = io.connect();
-  
-    // Handle search results from the server
-    socket.on('searchResult', function (asteroids) {
-      updateTable(asteroids);
-      
+      tableBody.appendChild(newRow);
+    });
+  }
+
+  // Function to handle the search form submission using Socket.IO
+  function search() {
+    const searchQuery = document.getElementById('searchQuery').value;
+    const searchFilter = document.getElementById('filterOption').value;
+
+    // Send the search query and filter to the server via Socket.IO
+    socket.emit('search', { search: searchQuery, filter: searchFilter });
+  }
+
+  // Function to clear the search form and fetch all asteroids again
+  function clearSearch() {
+    document.getElementById('searchQuery').value = '';
+    document.getElementById('filterOption').value = '';
+    search();
+  }
+
+  // Socket.IO connection
+  var socket = io.connect();
+
+  // Handle search results from the server
+  socket.on('searchResult', function (asteroids) {
+    updateTable(asteroids);
+
     // console.log(data);
     // console.log(asteroids);
-    });
+  });
 
-    // Perform initial search when the page loads
-    search();
-  </script>
-  
+  // Perform initial search when the page loads
+  search();
+</script>
+
 
 </html>

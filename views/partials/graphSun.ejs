@@ -1,0 +1,64 @@
+<!-- graphSun.ejs -->
+
+<div class="row">
+    <div class="col-md-12">
+      <div class="card card-chart" style="width: 100%;">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Sun Distribution</h4>
+          <p class="card-category">Distribution of Sun apparent diameter over time</p>
+        </div>
+        <div class="card-body">
+          <div id="sunChart"></div> <!-- Updated the ID to "sunChart" -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  
+  <script>
+    // JavaScript code to render the Sun Distribution chart
+    // JavaScript code to render the Sun Distribution chart
+function createSunChart() {
+  fetch('/api/sun')
+    .then((response) => response.json())
+    .then((data) => {
+      // Convert the dates to the format recognized by Plotly
+      const dates = data.map((entry) => new Date(entry.date));
+      const apparentDiameters = data.map((entry) =>
+        parseFloat(entry.apparentDiameter.replace(',', '.'))
+      );
+
+      // Plotly chart configuration
+      const trace = {
+        x: dates,
+        y: apparentDiameters,
+        mode: 'lines',
+      };
+
+      // Define Layout
+      const layout = {
+        xaxis: {
+          type: 'date',
+          title: 'Date',
+          tickformat: '%b %d',
+        },
+        yaxis: {
+          title: 'Apparent Diameter',
+        },
+        title: 'Sun Distribution - Apparent Diameter Over Time',
+        autosize: true, // Let Plotly automatically resize the chart to fit the container
+      };
+
+      // Display the Plotly chart
+      Plotly.newPlot('sunChart', [trace], layout);
+    })
+    .catch((error) => {
+      console.error('Error fetching Sun data:', error);
+    });
+}
+
+  
+    window.addEventListener('load', createSunChart);
+  </script>
+  

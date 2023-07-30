@@ -1,17 +1,178 @@
-/* table {
+
+/* Welcome message */
+  .welcome-message {
+    margin-top: -50px; /* Adjust the margin to reduce space */
+    text-align: center;
+    font-size: 20px; /* Adjust the font size */
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Add the shadow effect here */
+  }
+
+/* asteroids.ejs style */
+  .title-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .title {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    color: #022c85; /* Adjust the color as needed */
+    margin-left: 10px;
+  }
+
+  .nasa-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -37px; /* Adjust the vertical position of the logo */
+    max-height: 60px; /* Adjust the logo size as needed */
+  }
+
+  /* Sun.ejs style*/
+
+  .zoom-in-out {
+    animation: zoom-in-out 2s linear infinite;
+  }
+
+  @keyframes zoom-in-out {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  .card {
+    margin-bottom: 30px;
+    border: 0;
+    border-radius: 6px;
+    color: rgba(0, 0, 0, 0.87);
+    background: #fff;
     width: 100%;
-    border-collapse: collapse;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14), 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 4px 5px 0 rgba(0, 0, 0, 0.2);
   }
-  
-  table th, table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+
+  .card .card-header {
+    padding: 15px 20px;
+    border-radius: 3px;
+    margin-top: -30px;
+    border: 0;
+    margin-bottom: 15px;
   }
-  
-  table th {
-    background-color: #f2f2f2;
-  } */
-  
+
+
+  .card .card-header-primary {
+    background: linear-gradient(60deg, #ffa726, #fb8c00);
+  }
+
+  .card .card-body {
+    padding: 0.9375rem 20px;
+    position: relative;
+  }
+
+  .card .table {
+    margin-bottom: 0;
+  }
+
+  .card .card-category {
+    margin: 0;
+    font-weight: 300;
+    font-size: 0.75rem; 
+  }
+
+  .card .card-title {
+    margin: 0;
+    line-height: 1.42857143;
+  }
+
+  .card .card-title:first-child {
+    margin-top: 0.25rem;
+  }
+
+  .card .card-title + .card-category {
+    margin-bottom: 0;
+  }
+
+  .card .card-title.card-title-sm {
+    font-size: 1.25em;
+  }
+
+  .card .card-footer {
+    margin: 0 20px 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eeeeee;
+  }
+
+  .card .card-footer p {
+    color: #999999;
+    margin: 0;
+  }
+
+  .card .card-footer p:first-child {
+    margin-left: 0;
+  }
+
+  .card .card-footer img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+ 
+  .sunspots-frame {
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+
+  .sunspots-frame h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .sun-image img {
+    max-width: 100%;
+  }
+
+  .sky-map-image img {
+    max-width: 100%;
+  }
+
+  .sun-title-container {
+        position: relative;
+        text-align: center;
+        margin-bottom: 20px;
+  }
+
+  .sun-title {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    color: #FF9800; /* Adjust the color as needed */
+    margin-bottom: 10px;
+  }
+
+  .sun-icon {
+    position: absolute;
+    top: -40px; /* Adjust the distance from the top */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px; /* Adjust the size of the sun icon */
+    color: #FF9800;
+  }
 
 /* Add the updated styles for the urgency square and cards */
 .square-card-icon {
@@ -22,11 +183,247 @@
     height: 100px; /* Set the height of the square icon */
     width: 100px; /* Set the width of the square icon */
     font-size: 24px; /* Adjust the font size for the number */
-    color: white; /* Set the text color to white */
+    color: rgb(146, 31, 31); /* Set the text color to white */
     font-weight: bold; /* Make the number bold */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
     transition: background-color 0.3s ease; /* Add a transition for background color change */
   }
+
+  /* weather.ejs style */
+  
+  /* Define the colors using regular CSS variables */
+  :root {
+    --color1: #C8DAE6;
+    --color2: white;
+    --color3: #B8B8B8;
+    --color4: #FFCD41;
+    --color5: #2092A9;
+  }
+  
+  body {
+    background-color: lighten(var(--color1), 10%);
+  }
+  
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+  
+  .weather-wrapper {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .weather-card {
+    margin:  20px 5px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    width: 270px;
+    height: 270px;
+    background-color: var(--color2);
+    box-shadow: 0px 0px 25px 1px rgba(50, 50, 50, 0.1);
+    animation: appear 500ms ease-out forwards;
+  }
+  
+  .weather-card h1 {
+    position: absolute;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 80px;
+    color: var(--color3);
+    bottom: 0;
+    left: 35px;
+    opacity: 0;
+    transform: translateX(150px);
+    animation: title-appear 500ms ease-out 500ms forwards;
+  }
+  
+  .weather-card p {
+    position: absolute;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    color: lighten(var(--color3), 10%);
+    bottom: 0;
+    left: 35px;
+    animation: title-appear 1s ease-out 500ms forwards;
+  }
+  
+  .weather-icon {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    top: 0;
+    float: right;
+    margin: 40px 40px 0 0;
+    animation: weather-icon-move 5s ease-in-out infinite;
+  }
+  
+  .weather-icon.sun { 
+    background: var(--color4); 
+    border-radius: 50%; 
+    box-shadow: rgba(255, 255, 0, 0.1) 0 0 0 4px;
+    animation: light 800ms ease-in-out infinite alternate, weather-icon-move 5s ease-in-out infinite;
+  }
+  
+  @keyframes light {
+    from {
+      box-shadow: rgba(255, 255, 0, 0.2) 0 0 0 10px;
+    }
+    to {
+      box-shadow: rgba(255, 255, 0, 0.2) 0 0 0 17px;
+    }
+  }
+  
+  .weather-icon.cloud { 
+  background: #8a8888; /* Use the correct hex color code for grey */
+  margin-right: 70px;
+  border-radius: 20px;
+  width: 35px;
+  height: 40px;
+  box-shadow: 
+    #797777 8px 0px,
+    #797777 32px -6px, 
+    #797777 20px 0px;
+}
+  
+  .weather-icon.cloud:after {
+    content: "";
+    position: absolute;
+    border-radius: 10px;
+    background-color:  #6a6666;
+    width: 4px;
+    height: 12px;
+    left: 0;
+    top: 31px;
+    transform: rotate(30deg);
+    animation: rain 800ms ease-in-out infinite alternate;
+  }
+
+   /* Rain icon style */
+   .weather-icon.rain { 
+      background: var(--color5);
+      margin-right: 60px;
+      border-radius: 20px;
+      width: 25px;
+      height: 25px;
+      box-shadow: 
+        var(--color5) 8px 0px,
+        var(--color5) 32px -6px, 
+        var(--color5) 20px 0px;
+    }
+    
+    .weather-icon.rain:after {
+      content: "";
+      position: absolute;
+      border-radius: 10px;
+      background-color: transparent;
+      width: 4px;
+      height: 12px;
+      left: 0;
+      top: 31px;
+      transform: rotate(30deg);
+      animation: rain 800ms ease-in-out infinite alternate;
+    }
+
+    .weather-icon.clear-sky {
+      background: #32b1cb; /* Adjust the color for the clear blue sky */
+      margin-right: 80px;
+      border-radius: 50%;
+      width: 45px;
+      height: 50px;
+      box-shadow: 
+        #32b1cb 8px 0px,
+        #32b1cb 32px -10px, 
+        #32b1cb 15px 5px;
+}
+
+  
+  @keyframes rain {
+    from {
+      box-shadow: 
+        var(--color5) 8px 0px,
+        var(--color5) 32px -6px, 
+        var(--color5) 20px 0px;
+    }
+    to {
+      box-shadow: 
+        var(--color5) 8px 6px,
+        var(--color5) 32px 0px, 
+        var(--color5) 20px 6px;
+    }
+  }
+  
+  @keyframes weather-icon-move {
+    50% { 
+      transform: translateY(-8px); 
+    }
+  }
+  
+  .inspiration {
+    margin-top: 80px;
+    color: darken(var(--color1), 25%);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .inspiration a {
+    color: #FF8F8F;
+    font-weight: 400;
+    animation: all 300ms ease-in-out;
+  }
+  
+  @keyframes appear {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    75% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes title-appear {
+    from {
+      opacity: 0;
+      transform: translateX(150px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0px);
+    }
+  }
+
+    /* Add the title style */
+    .title {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    color: #2092A9; /* Adjust the color as needed */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Add the compass icon style */
+  .compass-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: #2092A9; /* Adjust the color as needed */
+    margin-right: 10px;
+  }
+  
   
   /* Add styling for different urgency levels */
   .square-card-icon.green {
@@ -42,10 +439,6 @@
     background-color: red;
   }
   
-  /* Add the UX effect for urgency level 5 */
-  .square-card-icon.red.urgent {
-    animation: blink 1s infinite; /* Apply the blinking animation */
-  }
 
   .card-footer .stats {
     display: flex;
