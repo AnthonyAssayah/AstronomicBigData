@@ -26,7 +26,7 @@ To use Astronomic Big Data, follow these installation steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/AnthonyAssayah/AstronomicBigData.git
+   git clone -b master https://github.com/AnthonyAssayah/AstronomicBigData
 
 2. Install all the required modules
     ```bash
