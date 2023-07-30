@@ -13,10 +13,10 @@
   app.set('view engine', 'ejs');
 
   // Export the functions so that other files can use them
-  const { scrapegraphSun, scrapeSunData } = require('./SunScrapping'); // Import the functions
-  const { fetchAllWeatherData } = require('./weather'); // Import the function from weather.js
-  const { runConsumer} = require('./events'); // Import the function from events.js
-  const { fetchAsteroids } = require('./asteroids'); // Import the function from asteroids.js
+  const { scrapegraphSun, scrapeSunData } = require('./model/SunScrapping'); // Import the functions
+  const { fetchAllWeatherData } = require('./model/weather'); // Import the function from weather.js
+  const { runConsumer} = require('./model/events'); // Import the function from events.js
+  const { fetchAsteroids } = require('./model/asteroids'); // Import the function from asteroids.js
 
 
   // Elasticsearch configuration
@@ -27,7 +27,7 @@
   const client = new Client(bonsaiConfig);
   const index = 'astronomic-index-new';
 
-  
+
   // dashboard page route
   app.get('/', async (req, res) => {
     try {

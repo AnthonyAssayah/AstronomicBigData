@@ -32,6 +32,9 @@ const cities = [
   'Mexico',
   'Santiago',
   'Buenos Aires',
+  'Tokyo',
+  'Beijing',
+  'Rio de Janeiro',
 ];
 
 async function getWeatherData(city) {
