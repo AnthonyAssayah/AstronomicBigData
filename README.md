@@ -5,6 +5,7 @@
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
+- [Architecture ](#Architecture)
 
 ## Introduction
 
@@ -35,3 +36,6 @@ To use Astronomic Big Data, follow these installation steps:
    ```bash
    docker-compose -f elasticsearch-kibana-docker-compose.yml
    
+## Architecture 
+
+![image](https://github.com/AnthonyAssayah/AstronomicBigData/assets/92504985/d09b2941-1fe9-4f54-99f9-d12359764199)
