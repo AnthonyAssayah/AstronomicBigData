@@ -94,5 +94,6 @@ DASHBOARDWITHWS
    
 ## Architecture 
 
-![image](https://github.com/AnthonyAssayah/AstronomicBigData/assets/92504985/314135ae-4268-46d0-872c-d9624e044fd4)
+![image](https://github.com/AnthonyAssayah/AstronomicBigData/assets/92504985/2b51b60d-5867-4ca7-87ac-a29ceea7de8e)
+
 
