@@ -12,7 +12,7 @@
 
 ## Introduction
 
-Astronomic Big Data is an project aiming on data transfer , web scrapping , UI 
+Welcome to Astronomic Big Data, a groundbreaking project that brings together cutting-edge technologies such as data transfer, web scraping, UI design, Kafka, cloud infrastructure, Docker, socket IO, database management, and API integration. Our ambitious goal is to create a sophisticated data alerting and analytics system that harnesses the power of NoSQL databases and a hybrid cloud computing environment. By providing real-time event monitoring and advanced data exploration capabilities, we empower scientists and researchers to gain valuable insights from the vast realm of astronomical data. Join us in this transformative journey as we push the boundaries of big data processing and revolutionize the way we perceive and utilize astronomical information.
 
 ## Features
 
