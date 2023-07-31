@@ -65,7 +65,7 @@ To use Astronomic Big Data, follow these installation steps:
    node ./Client_ES.js
    node ./simulator.js
    node ./server.js
-## FileStructure
+## File Structure
 
 Within the download you'll find the following directories and files:
 
