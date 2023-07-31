@@ -8,7 +8,6 @@
 - [Installation](#installation)
 - [File Structure](#file-structure)
 - [Architecture ](#architecture)
-- [File Structure ](#FileStructure)
 
 ## Introduction
 
@@ -61,6 +60,11 @@ To use Astronomic Big Data, follow these installation steps:
    ```bash
    docker-compose -f elasticsearch-kibana-docker-compose.yml -d
 
+4. Run the required js files
+   ```
+   node ./Client_ES.js
+   node ./simulator.js
+   node ./server.js
 ## FileStructure
 
 Within the download you'll find the following directories and files:
