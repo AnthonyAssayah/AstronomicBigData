@@ -22,7 +22,6 @@ const bonsaiConfig = {
   node: 'http://localhost:9200',
 };
 
-
 const client = new Client(bonsaiConfig);
 const index = 'astronomic-index-new'; 
 
