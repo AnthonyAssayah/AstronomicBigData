@@ -24,7 +24,7 @@
     "kafkajs": "^2.2.4",
     "moment": "^2.29.4",
     "mongodb": "^4.1.1",
-    "mongoose": "^7.4.1",
+    "mongoose": "^7.8.4",
     "moongoose": "^0.0.1",
     "net": "^1.0.2",
     "nodemon": "^3.1.4",
